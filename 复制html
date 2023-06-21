@@ -1,0 +1,41 @@
+let select = 'body'
+if(!window.$ || !window.jQuery) {
+  var x = document.createElement("SCRIPT");
+  x.setAttribute('src','https://code.jquery.com/jquery-2.2.4.min.js')
+  document.body.appendChild(x);
+  setTimeout(startRenderEl, 2000)
+} else {
+  startRenderEl()
+}
+function startRenderEl() {
+  let styles = [
+    'color','background','width',
+    'height','fontSize','lineHeight', 'margin', 
+    'padding','position', 'float','right',
+    'bottom','top','left', 'display','border',
+    'borderTop','borderBottom','borderLeft','borderRight',
+    'cursor','overflow','boxSizing','borderColor',
+    'borderRadius','textDecoration','listStyle',
+   'textAlign'
+  ]
+  dealItemEl(select)
+  $(select+' *').each((index, el) => {
+    dealItemEl(el)
+  })
+  function dealItemEl(el) {
+    if (typeof el === 'string') {
+      el = $(el)
+    }
+    if (el instanceof jQuery) {
+      el = el[0]
+    }
+    let styleObj = window.getComputedStyle(el)
+    styles.forEach(v => {
+      if (styleObj[v]) {
+        $(el).css(v, styleObj[v])
+      }
+    })
+  }
+  let content = $('<div>').append($(select).clone()).html();
+  console.log(content)
+}
